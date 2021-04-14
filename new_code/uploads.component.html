@@ -1,0 +1,93 @@
+<mat-toolbar class="mat-elevation-z1" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="title">
+        <div fxFlex fxLayout="row" fxLayoutAlign="end center" (click)="toggleSideNav()" fxHide.gt-sm>
+            <button mat-icon-button>
+                <mat-icon fontIcon="fa-bars"></mat-icon>
+            </button>
+        </div>
+        <span state="user-account" cmsTranslation="uploads">Uploads</span>
+    </div>
+</mat-toolbar>
+
+<mat-progress-bar *ngIf="showProgressBar" mode="indeterminate"></mat-progress-bar>
+
+<div class="container" fxLayout="column">
+    <span class="text grey" state="user-account" cmsTranslation="uploads-info">
+        Please upload each document specified below. All fields allow only one document each. Valid file formats for
+        documents are doc, docx, pdf, txt.
+    </span>
+
+    <div fxLayout="column" class="pt1">
+        <div fxLayout="column" *ngFor="let item of this.docs; let i = index">
+            <div fxLayout.gt-sm="row" fxLayout.lt-sm="column">
+                <div fxFlex="50" class="pt2">
+                    <ng-container *ngIf="item.docStatus; else elseTemplate">
+                        <div class="text gray title-link" (click)="this.getFileInfo(item)">
+                            <strong><span state="dynamicFields" [cmsTranslation]="item.langTableName">Document</span></strong>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #elseTemplate>
+                        <div class="text gray">
+                            <strong><span state="dynamicFields" [cmsTranslation]="item.langTableName">Document</span></strong>
+                        </div>
+                    </ng-template>
+
+                    <div>
+                        <span state="dynamicFields" [cmsTranslation]="item.lastComment" class="infoText" *ngIf="item.docStatus === 'F'">{{ item.lastComment }}</span>
+                    </div>
+                </div>
+
+                <div fxFlex="50" class="pt2">
+                    <ng-container *ngIf="this.docs[i].showProgressBar; else elseVersion">
+                        <div fxLayout="row">
+                            <mat-icon fontIcon="fa-refresh" class="fa-spin custom-spin" color="primary"></mat-icon>
+                            <div class="loading-wrapper">
+                                <span state="dynamicFields" cmsTranslation="Uploading">Uploading</span>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #elseVersion>
+                        <div class="button-wrapper" (click)="hiddenFileInput.click()" [ngClass]="{ disabledDiv: item.docStatus === 'V' }">
+                            <mat-icon fontIcon="fa-cloud-upload" color="accent"></mat-icon>
+                            <input
+                                type="file"
+                                [accept]="this.allowedDocumentsType"
+                                data-default-file=""
+                                (change)="this.onDocumentChange($event, item, i)"
+                                #hiddenFileInput
+                                class="displayNone"
+                            />
+                            {{ item.fileName ? item.fileName : this.translations.uploadBtnText }}
+                        </div>
+                    </ng-template>
+
+                    <div>
+                        <mat-icon
+                            [style.color]="this.getWarningInfo(item.docStatus, item.required).color"
+                            [fontIcon]="this.getWarningInfo(item.docStatus, item.required).iconName"
+                            class="jn-field-icon"
+                            *ngIf="this.getWarningInfo(item.docStatus, item.required).iconName"
+                        >
+                        </mat-icon>
+
+                        <span class="infoText grey">
+                            {{ this.getWarningInfo(item.docStatus, item.required).text}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="this.docs[i + 1]?.corpIndivBoth !== item?.corpIndivBoth && i !== this.docs.length - 1">
+                <div class="pt3">
+                    <mat-divider></mat-divider>
+                </div>
+
+                <div state="user-account" cmsTranslation="uploads-infoRed" class="text red pt1">
+                    Please upload these documents and contact customer service to register your company.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

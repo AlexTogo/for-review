@@ -1,0 +1,84 @@
+/**
+*  @fileOverview SCSS Files.
+*  @author       Alex Togo;
+*/
+
+@import '../../../../../../../shared/theme/jn-palette';
+
+/*
+==================
+    VARIABLES
+==================
+*/
+
+/*
+=============================
+    ADJUSTING PAGE
+=============================
+*/
+.container {
+    padding: 1.6em;
+}
+
+.text {
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.infoText {
+    font-weight: 300;
+    font-size: 12px;
+}
+
+.grey {
+    color: map-get($mat-jngrey, 500);
+}
+
+.red {
+    color: map-get($jn-red, 600);
+}
+
+.pt1 {
+    padding-top: 1em;
+}
+
+.pt2 {
+    padding-top: 2em;
+}
+
+.pt3 {
+    padding-top: 3em;
+}
+
+.pl1 {
+    padding-left: 1em;
+}
+
+.displayNone {
+    display: none;
+}
+
+.button-wrapper {
+    cursor: pointer;
+    display: table-cell;
+}
+
+.disabledDiv {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.title-link {
+    cursor: pointer;
+    text-decoration: underline;
+    display: table-cell;
+}
+
+.custom-spin {
+    line-height: 24px;
+}
+
+.loading-wrapper {
+    padding-top: 2px;
+    padding-left: 4px;
+}
